@@ -1,3 +1,5 @@
+import { client } from "$services/redis";
+
 interface QueryOpts {
 	page: number;
 	perPage: number;
@@ -5,4 +7,7 @@ interface QueryOpts {
 	direction: string;
 }
 
-export const itemsByUser = async (userId: string, opts: QueryOpts) => {};
+export const itemsByUser = async (userId: string, opts: QueryOpts) => {
+	Promise.all([client.l
+
+};
