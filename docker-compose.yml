@@ -1,0 +1,18 @@
+version: "3"
+services:
+  redis:
+    image: "redis:latest"
+    command: "redis-server --requirepass hrGQkT3AzI1gGLKmHaWKJ8vEnKN2Pbae"
+  client:
+    depends_on: 
+      - redis
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - /home/node/app/node_modules
+      - .:/home/node/app
+    env_file: 
+     - .env
+    ports:
+      - "3000:3000"
