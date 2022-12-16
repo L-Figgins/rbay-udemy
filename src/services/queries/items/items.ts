@@ -2,7 +2,7 @@ import { client } from '$services/redis';
 import type { CreateItemAttrs } from '$services/types';
 import { genId } from '$services/utils';
 import { serialize } from '$services/queries/items/serialize';
-import { itemsKey } from '../../keys';
+import { itemsKey, itemsByViewsKey } from '../../keys';
 import { isEmptyObj } from '$services/utils/is-empty-obj';
 import { deserialize } from '$services/queries/items/deserialize';
 
@@ -37,7 +37,16 @@ export const getItems = async (ids: string[]) => {
 export const createItem = async (attrs: CreateItemAttrs, userId:string) => {
     const id = genId();
     const serialized = serialize(attrs, userId);
-    await client.hSet(itemsKey(id), serialized);
+
+    //instead pipeline (pipe in other langauges)
+    // in javascript you wrap in a promise.all and node-redis handles internally
+    await Promise.all([
+        client.hSet(itemsKey(id), serialized),
+        client.zAdd(itemsByViewsKey(),{
+           value: id,
+           score: 0 // #items start with zero views
+       })])
+    
     
     return id
 };
