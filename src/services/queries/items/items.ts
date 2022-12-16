@@ -45,11 +45,13 @@ export const createItem = async (attrs: CreateItemAttrs, userId:string) => {
         client.zAdd(itemsByViewsKey(),{
            value: id,
            score: 0 // #items start with zero views
-       })]),
+       }),
        client.zAdd(itemsByEndingAtKey(), {
         value:id,
         score: attrs.endingAt.toMillis()
        })
+    ])
+       
     
     
     return id
