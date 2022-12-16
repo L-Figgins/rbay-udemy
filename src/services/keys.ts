@@ -1,8 +1,7 @@
+//caching
 export const pageCacheKey = (id:string) => {
     return `pagecache#${id}`
 }
-
-
 
 export const sessionsKey = (sessionId:string) => {
     return `sessions#${sessionId}`;
@@ -10,8 +9,7 @@ export const sessionsKey = (sessionId:string) => {
 
 //items
 export const itemsKey = (itemId:string) => `items#${itemId}`
-
-
+export const itemsByViewsKey = () => 'items:views';
 
 //users
 export const usersKey = (userId:string) => `users#${userId}`
