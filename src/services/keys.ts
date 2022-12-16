@@ -11,7 +11,8 @@ export const sessionsKey = (sessionId:string) => {
 export const itemsKey = (itemId:string) => `items#${itemId}`
 export const itemsByViewsKey = () => 'items:views';
 export const itemsByEndingAtKey = () => 'items:endingAt';
-
+export const itemsViewsKey = (itemId:string) => `items:views#${itemId}`
+export const bidHistoryKey = (itemId:string) => `history#${itemId}` 
 //users
 export const usersKey = (userId:string) => `users#${userId}`
 export const usernamesUniqueKey = () => 'usernames:unique';
