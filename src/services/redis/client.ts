@@ -1,5 +1,6 @@
 import { createClient , defineScript} from 'redis';
 import {itemsKey, itemsViewsKey, itemsByViewsKey} from "$services/keys";
+import { readJsonConfigFile } from 'typescript';
 
 const client = createClient({
 	socket: {
@@ -22,6 +23,38 @@ const client = createClient({
 					transformReply(reply:any){
 						return reply
 			}
+		}),
+		incrementView: defineScript({
+			NUMBER_OF_KEYS: 3,
+			SCRIPT: `
+				local itemsViewsKey = KEYS[1]
+				local itemsKey = KEYS[2]
+				local itemsByViewsKey = KEYS[3]
+
+				local itemId = ARGV[1]
+				local userId = ARGV[2]
+
+				local inserted = redis.call('PFADD', itemsViewsKey, userId)
+
+				if inserted == 1 then
+					redis.call('HINCRBY', itemsKey, 'views', 1)
+					redis.call('ZINCRBY', itemsByViewsKey, 1, itemId)
+				end
+			`,
+			transformArguments(itemId:string, userId:string){
+				return [
+					//keys
+					itemsViewsKey(itemId),
+					itemsKey(itemId),
+					itemsByViewsKey(),
+					//args
+					itemId,
+					userId
+				]
+			},
+			transformReply(reply:any) {
+				return reply
+			},
 		})
 	}
 });
