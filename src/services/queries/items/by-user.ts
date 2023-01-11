@@ -9,5 +9,4 @@ interface QueryOpts {
 
 export const itemsByUser = async (userId: string, opts: QueryOpts) => {
 	return []
-
 };
