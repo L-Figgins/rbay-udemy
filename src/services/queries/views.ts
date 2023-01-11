@@ -2,6 +2,7 @@ import { itemsByViewsKey, itemsKey, itemsViewsKey } from "$services/keys";
 import { client } from "$services/redis";
 
 export const incrementView = async (itemId: string, userId: string) => {
+    //hyperlog
     const inserted = await client.pfAdd(itemsViewsKey(itemId), userId);
 
     if(inserted){
