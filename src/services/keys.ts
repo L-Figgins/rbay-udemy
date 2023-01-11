@@ -9,7 +9,7 @@ export const sessionsKey = (sessionId:string) => {
 
 //items
 export const itemsKey = (itemId:string) => `items#${itemId}`
-export const itemsViewsKey = (itemId:string) => `items:views#${itemId}`;
+export const itemsViewsKey = (itemId:string) => `items:views#${itemId}` // hyperlog;
 export const bidHistoryKey = (itemId:string) => `history#${itemId}`; 
 
 //sorted sets
