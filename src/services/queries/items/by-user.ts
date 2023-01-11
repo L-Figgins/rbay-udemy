@@ -8,6 +8,6 @@ interface QueryOpts {
 }
 
 export const itemsByUser = async (userId: string, opts: QueryOpts) => {
-	Promise.all([client.l
+	return []
 
 };
