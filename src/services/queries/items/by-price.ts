@@ -20,7 +20,6 @@ export const itemsByPrice = async (order: 'DESC' | 'ASC' = 'DESC', offset = 0, c
     })
 
     const items = collectItems(results)
-
     return items
 };
 
@@ -30,7 +29,7 @@ function collectItems(data:any[]){
     const items = []
     while(data.length){
         const [id, name, views, endingAt, imageUrl, price, ...rest] = data;
-        const item = deserialize(id, {name,views})
+        const item = deserialize(id, {name,views, endingAt, imageUrl, price })
         items.push(item);
         data = rest;
     }

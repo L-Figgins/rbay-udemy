@@ -31,7 +31,7 @@ function collectItems(data:any[]){
     const items = []
     while(data.length){
         const [id, name, views, endingAt, imageUrl, price, ...rest] = data;
-        const item = deserialize(id, {name,views})
+        const item = deserialize(id, {name,views, endingAt, imageUrl, price})
         items.push(item);
         data = rest;
     }
