@@ -6,7 +6,7 @@ import { getItem, } from './items';
 
 
 export const createBid = async (attrs: CreateBidAttrs) => {
-	//validations
+	// validations
 	// simple lock. Use redlock algo in real projects
 	// https://redis.io/docs/manual/patterns/distributed-locks/
 	return withLock(attrs.itemId, async () => {
