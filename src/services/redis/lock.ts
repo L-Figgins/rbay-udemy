@@ -15,7 +15,8 @@ export const withLock = async (key:string, cb:()=>any) => {
 		//acquire lock
 		retries--;
 		const acquired = await client.set(lockKey, token, {
-			NX: true
+			NX: true,
+			PX: 2000
 		})
 		
 		// if not is not acquired retry
@@ -25,11 +26,13 @@ export const withLock = async (key:string, cb:()=>any) => {
 			continue
 		}
 
-		const result = await cb()
+		try {
+			const result = await cb()
+			return result
+		} finally {
+			await client.unlock(lockKey, token)
+		}
 		//unset lock
-
-		await client.del(lockKey)
-		return result;
 	}
 
 
