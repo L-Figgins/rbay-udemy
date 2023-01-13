@@ -17,6 +17,8 @@ export const itemsByPriceKey = ()=> 'items:price'
 export const itemsByViewsKey = () => 'items:views';
 export const itemsByEndingAtKey = () => 'items:endingAt';
 
+//indexex
+export const itemsIndexKey = () => 'idx:items';
 //users
 export const usersKey = (userId:string) => `users#${userId}`
 export const usernamesUniqueKey = () => 'usernames:unique';
