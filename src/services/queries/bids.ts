@@ -9,7 +9,7 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 	// validations
 	// simple lock. Use redlock algo in real projects
 	// https://redis.io/docs/manual/patterns/distributed-locks/
-	return withLock(attrs.itemId, async () => {
+	return withLock(attrs.itemId, async (lockedClient:typeof client) => {
 		await client.watch(itemsKey(attrs.itemId))
 		const item = await getItem(attrs.itemId);
 
@@ -28,14 +28,14 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 		const serialized = serializeHistory(attrs.amount,attrs.createdAt.toMillis())
 		// this is probably different between client implementations
 		return Promise.all([
-			client.rPush(bidHistoryKey(attrs.itemId), serialized),
-			client.hSet(itemsKey(item.id), {
+			lockedClient.rPush(bidHistoryKey(attrs.itemId), serialized),
+			lockedClient.hSet(itemsKey(item.id), {
 				bids: item.bids + 1,
 				price: attrs.amount	,// watch item for updates. If updated will cancel transaction
 		
 				highestBidUserId: attrs.userId
 			}),
-			client.zAdd(itemsByPriceKey(), {value: attrs.itemId, score: attrs.amount})
+			lockedClient.zAdd(itemsByPriceKey(), {value: attrs.itemId, score: attrs.amount})
 		])
 	})
 
