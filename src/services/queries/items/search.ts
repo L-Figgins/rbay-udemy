@@ -17,10 +17,13 @@ export const searchItems = async (term: string, size: number = 5) => {
         return [];
     }
 
+    const query = `(@name:(${cleaned}) => {$weight: 5.0} | (@description:(${cleaned}))`
+    console.log(query)
+
     const results = await client.ft.search(
         itemsIndexKey(),
         //since we searching against all fields we don't need @field syntax
-        cleaned, 
+        query, 
         {
             LIMIT: {
                 from: 0,
